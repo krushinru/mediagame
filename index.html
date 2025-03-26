@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="stats-panel">
+            <div class="stat" id="budget">
+                <span class="stat-label">Бюджет</span>
+                <span class="stat-value">100000</span>
+            </div>
+            <div class="stat" id="trust">
+                <span class="stat-label">Доверие</span>
+                <span class="stat-value">50%</span>
+            </div>
+            <div class="stat" id="readers">
+                <span class="stat-label">Читатели</span>
+                <span class="stat-value">10000</span>
+            </div>
+            <div class="stat" id="turn-counter">
+                <span class="stat-label">День</span>
+                <span class="stat-value">0</span>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card" id="current-card">
+                <div class="card-content">
+                    <p id="situation-text">Готовы стать владельцем собственного медиа? Каждое ваше решение будет влиять на будущее издания. Докажите, что независимая журналистика может быть успешной и прибыльной!</p>
+                    <div id="choices-container">
+                        <button id="start-game" class="choice-button">Издание</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden-metrics">
+            <div class="metric" id="advertiser-relations">
+                <div class="metric-label">Рекламодатели</div>
+                <div class="metric-bar"></div>
+            </div>
+            <div class="metric" id="staff-morale">
+                <div class="metric-label">Мораль сотрудников</div>
+                <div class="metric-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="situations.js"></script>
+    <script src="game.js"></script>
+</body>
+</html> 
