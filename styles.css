@@ -290,11 +290,41 @@ body {
     min-height: 44px;
     margin: 0 auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    padding-left: 40px;
+    padding-right: 40px;
+    min-width: 200px;
+    justify-content: center;
 }
 
-.choice-button:hover {
-    background: #666;
-    transform: scale(1.03);
+.choice-button::after {
+    content: '→';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.4em;
+    opacity: 1;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    text-shadow: 0 0 5px currentColor;
+    font-weight: bold;
+}
+
+.choice-button.negative::after {
+    content: '←';
+    right: auto;
+    left: 15px;
+    color: #ff4444;
+}
+
+.choice-button.positive::after {
+    color: #44ff44;
+}
+
+.choice-button:hover::after {
+    transform: translateY(-50%) scale(1.2);
+    text-shadow: 0 0 8px currentColor;
 }
 
 .choice-button:active {
@@ -561,6 +591,21 @@ body .decision-text.right {
     
     #choices-container, .game-over-content, .victory-content {
         gap: 15px;
+    }
+    
+    .choice-button {
+        min-width: 180px;
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+    
+    .choice-button::after {
+        font-size: 1.3em;
+        right: 12px;
+    }
+    
+    .choice-button.negative::after {
+        left: 12px;
     }
 }
 

@@ -88,6 +88,7 @@ class Game {
         if (startButton) {
             // Удаляем старые обработчики, если они есть
             const newStartButton = startButton.cloneNode(true);
+            newStartButton.className = 'choice-button';
             startButton.parentNode.replaceChild(newStartButton, startButton);
             
             newStartButton.addEventListener('click', () => this.startGame());
@@ -492,49 +493,9 @@ class Game {
         console.log('[showSituation] Creating choice buttons');
         situation.choices.forEach((choice, index) => {
             const button = document.createElement('button');
-            button.className = 'choice-button';
-            const arrow = index === 0 ? '→' : '←';
-            button.innerHTML = `${arrow} ${choice.text}`;
-            
-            // Улучшенный обработчик клика
-            button.onclick = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
-                this.isAnimating = false;
-                button.disabled = false;
-                console.log(`[button click] Button clicked: ${index === 0 ? 'right' : 'left'}`);
-                if (this.isAnimating) {
-                    console.log('[button click] Animation in progress, ignoring click');
-                    return;
-                }
-                
-                // Блокируем все взаимодействия
-                this.isAnimating = true;
-                button.disabled = true;
-                console.log('[button click] Button disabled, animation started');
-                
-                // Показываем текст выбора
-                this.showDecisionText(choice.text, index === 0);
-                
-                // Запускаем анимацию
-                requestAnimationFrame(() => {
-                    this.elements.currentCard.classList.add('swiped', index === 0 ? 'swiped-right' : 'swiped-left');
-                    
-                    // Обработчик окончания анимации
-                    const handleAnimationEnd = () => {
-                        console.log('[button click] Animation ended, making choice');
-                        this.elements.currentCard.removeEventListener('animationend', handleAnimationEnd);
-                        this.elements.currentCard.classList.remove('swiped', 'swiped-right', 'swiped-left');
-                        this.makeChoice(choice);
-                        button.disabled = false;
-                        this.isAnimating = false;
-                    };
-                    
-                    this.elements.currentCard.addEventListener('animationend', handleAnimationEnd, { once: true });
-                });
-            };
-            
+            button.className = `choice-button ${index === 0 ? 'positive' : 'negative'}`;
+            button.textContent = choice.text;
+            button.addEventListener('click', () => this.makeChoice(choice));
             this.elements.choicesContainer.appendChild(button);
             console.log(`[showSituation] Button added: ${index}`);
         });

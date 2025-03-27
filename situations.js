@@ -308,6 +308,7 @@ const gameSituations = {
         choices: [
             {
                 text: "Ввести пэйвол для части контента",
+                next: "crypto_payment",
                 effects: {
                     budget: 25000,
                     readers: -8000,
@@ -435,6 +436,7 @@ const gameSituations = {
     
     crypto_payment: {
         id: "crypto_payment",
+        parent: "subscription_model",
         text: "Финтех-эксперт предлагает внедрить оплату подписки в криптовалюте 'для привлечения прогрессивной аудитории'",
         choices: [
             {
@@ -769,37 +771,12 @@ const gameSituations = {
                 }
             },
             {
-                text: "Начать культ поклонения 'Оракулу стикеров'",
+                text: "Основать культ поклонения 'Оракулу стикеров'",
                 effects: {
                     budget: 0,
                     readers: 4000,
                     staffMorale: 15,
                     trust: -10
-                }
-            }
-        ]
-    },
-    
-    rival_editor_prank: {
-        id: "rival_editor_prank",
-        text: "Главред конкурирующего издания прислал вам 50 пицц с ананасами и записку 'Удачи с монетизацией контента, лузеры!'",
-        choices: [
-            {
-                text: "Отправить в ответ 100 чашек с надписью 'У нас больше подписчиков'",
-                effects: {
-                    budget: -7000,
-                    readers: 2000,
-                    staffMorale: 10,
-                    trust: 0
-                }
-            },
-            {
-                text: "Опубликовать фоторепортаж 'Как мы съели 50 пицц за день'",
-                effects: {
-                    budget: 3000,
-                    readers: 5000,
-                    staffMorale: 15,
-                    trust: 5
                 }
             }
         ]
