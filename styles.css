@@ -713,4 +713,104 @@ body .decision-text.right {
     .card.returning {
         animation-duration: 0.01s;
     }
+}
+
+.share-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    width: 100%;
+}
+
+.share-title {
+    font-size: 0.7em;
+    color: #888;
+    margin: 0;
+    text-align: center;
+}
+
+.share-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+}
+
+.share-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    padding: 0;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.share-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.share-button:active {
+    transform: translateY(0);
+}
+
+.share-button i {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.share-button.telegram {
+    background-color: #0088cc;
+}
+
+.share-button.vk {
+    background-color: #0077ff;
+}
+
+.share-button.twitter {
+    background-color: #1da1f2;
+}
+
+.share-button.copy {
+    background-color: #6c757d;
+}
+
+.share-button.copy.copied {
+    background-color: #28a745;
+}
+
+@media (max-width: 480px) {
+    .share-container {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .share-title {
+        font-size: 0.65em;
+    }
+
+    .share-buttons {
+        gap: 15px;
+    }
+
+    .share-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .share-button i {
+        font-size: 14px;
+    }
 } 

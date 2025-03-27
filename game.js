@@ -80,7 +80,7 @@ class Game {
         this.elements.situationText = document.getElementById('situation-text');
         this.elements.choicesContainer = document.getElementById('choices-container');
         
-        this.elements.situationText.textContent = "Готовы стать владельцем собственного медиа? Каждое ваше решение будет влиять на будущее издания. Докажите, что журналистика может быть успешной и прибыльной!";
+        this.elements.situationText.textContent = "Готовы стать владельцем собственного медиа? Каждое ваше решение будет влиять на будущее издания. Докажите, что журналистическая работа может быть успешной и прибыльной!";
         this.elements.situationText.className = '';
         
         // Добавляем обработчик для кнопки старта
@@ -526,6 +526,95 @@ class Game {
         });
     }
 
+    createShareButtons(isVictory) {
+        const shareContainer = document.createElement('div');
+        shareContainer.className = 'share-container';
+
+        // Добавляем заголовок
+        const shareTitle = document.createElement('h3');
+        shareTitle.className = 'share-title';
+        shareTitle.textContent = 'Поделиться результатом';
+        shareContainer.appendChild(shareTitle);
+
+        // Создаем контейнер для кнопок
+        const shareButtons = document.createElement('div');
+        shareButtons.className = 'share-buttons';
+
+        // Создаем кнопки для каждой социальной сети
+        const buttons = [
+            { class: 'telegram', icon: 'fa-brands fa-telegram', url: 'https://t.me/share/url?url=' },
+            { class: 'vk', icon: 'fa-brands fa-vk', url: 'https://vk.com/share.php?url=' },
+            { class: 'twitter', icon: 'fa-brands fa-twitter', url: 'https://twitter.com/intent/tweet?url=' },
+            { class: 'copy', icon: 'fa-solid fa-link', url: null }
+        ];
+
+        buttons.forEach(button => {
+            const btn = document.createElement('button');
+            btn.className = `share-button ${button.class}`;
+            btn.innerHTML = `<i class="${button.icon}"></i>`;
+            btn.setAttribute('aria-label', `Поделиться в ${button.class}`);
+            
+            if (button.url) {
+                btn.onclick = () => this.shareToSocial(button.url, isVictory);
+            } else {
+                btn.onclick = () => this.copyToClipboard(isVictory);
+            }
+            
+            shareButtons.appendChild(btn);
+        });
+
+        shareContainer.appendChild(shareButtons);
+        return shareContainer;
+    }
+
+    generateShareText(isVictory) {
+        let text = '';
+        
+        if (isVictory) {
+            text = `🎉 Я успешно справился с управлением медиа!\n\n`;
+            text += `А сможете вы?`;
+        } else {
+            let reason = '';
+            if (this.state.budget <= 0) {
+                reason = '💸 Мое издание обанкротилось';
+            } else if (this.state.trust <= 0) {
+                reason = '💔 Я потерял доверие читателей';
+            } else if (this.state.readers <= 0) {
+                reason = '👋 Все читатели разбежались';
+            } else if (this.state.staffMorale <= 0) {
+                reason = '😤 Весь коллектив уволился';
+            }
+            
+            text = `${reason} за ${this.state.turnCount} дней!\n\n`;
+            text += `Сможете продержаться дольше?`;
+        }
+        
+        return text;
+    }
+
+    shareToSocial(url, isVictory) {
+        const shareUrl = encodeURIComponent(window.location.href);
+        const shareText = encodeURIComponent(this.generateShareText(isVictory));
+        window.open(url + shareUrl + '&text=' + shareText, '_blank', 'width=600,height=400');
+    }
+
+    copyToClipboard(isVictory) {
+        const copyButton = document.querySelector('.share-button.copy');
+        const text = this.generateShareText(isVictory) + '\n' + window.location.href;
+        
+        navigator.clipboard.writeText(text).then(() => {
+            copyButton.classList.add('copied');
+            copyButton.innerHTML = '<i class="fa-solid fa-check"></i>';
+            
+            setTimeout(() => {
+                copyButton.classList.remove('copied');
+                copyButton.innerHTML = '<i class="fa-solid fa-link"></i>';
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy URL:', err);
+        });
+    }
+
     showVictory() {
         console.log('[showVictory] Showing victory screen');
         
@@ -554,27 +643,27 @@ class Game {
         
         // Добавляем оценку результатов
         if (this.state.trust > 75) {
-            message += `Вы заслужили высокое доверие аудитории (${this.state.trust}%).\n`;
+            message += `Вы заслужили высокое доверие аудитории.\n`;
         } else if (this.state.trust > 40) {
-            message += `Вам удалось сохранить приемлемый уровень доверия (${this.state.trust}%).\n`;
+            message += `Вам удалось сохранить приемлемый уровень доверия.\n`;
         } else {
-            message += `Доверие к вашему изданию невысоко (${this.state.trust}%), но у вас всё впереди.\n`;
+            message += `Доверие к вашему изданию невысоко, но у вас всё впереди.\n`;
         }
         
         if (this.state.readers > 50000) {
-            message += `Ваша аудитория выросла до внушительных размеров (${this.state.readers.toLocaleString()} читателей).\n`;
+            message += `Ваша аудитория выросла до внушительных размеров.\n`;
         } else if (this.state.readers > 20000) {
-            message += `У вас сформировалась солидная аудитория (${this.state.readers.toLocaleString()} читателей).\n`;
+            message += `У вас сформировалась солидная аудитория.\n`;
         } else {
-            message += `Ваша аудитория пока невелика (${this.state.readers.toLocaleString()} читателей), но лояльна.\n`;
+            message += `Ваша аудитория пока невелика, но лояльна.\n`;
         }
         
         if (this.state.budget > 200000) {
-            message += `Финансовое положение превосходное, счёт пухнет от денег (${this.state.budget.toLocaleString()} ₽).\n`;
+            message += `Финансовое положение превосходное, счёт пухнет от денег.\n`;
         } else if (this.state.budget > 100000) {
-            message += `Финансово издание чувствует себя уверенно (${this.state.budget.toLocaleString()} ₽).\n`;
+            message += `Финансово издание чувствует себя уверенно.\n`;
         } else {
-            message += `Бюджет не блещет (${this.state.budget.toLocaleString()} $), но вы выжили!\n`;
+            message += `Бюджет не блещет, но вы выжили!\n`;
         }
         
         if (this.state.staffMorale > 75) {
@@ -601,9 +690,13 @@ class Game {
         restartButton.textContent = 'Играть снова';
         restartButton.onclick = () => this.resetGame();
         
+        // Добавляем кнопки шеринга
+        const shareButtons = this.createShareButtons(true);
+        
         // Добавляем элементы на экран победы
         victoryContent.appendChild(messageText);
         victoryContent.appendChild(restartButton);
+        victoryContent.appendChild(shareButtons);
         this.elements.currentCard.appendChild(victoryContent);
     }
 
@@ -982,9 +1075,13 @@ class Game {
             restartButton.textContent = 'Играть снова';
             restartButton.onclick = () => this.resetGame();
             
+            // Добавляем кнопки шеринга
+            const shareButtons = this.createShareButtons(false);
+            
             // Добавляем элементы на экран поражения
             gameOverContent.appendChild(messageText);
             gameOverContent.appendChild(restartButton);
+            gameOverContent.appendChild(shareButtons);
             this.elements.currentCard.appendChild(gameOverContent);
         }
         
