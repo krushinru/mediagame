@@ -536,6 +536,10 @@ body .decision-text.right {
     transform: translateY(0);
 }
 
+.victory-button::after {
+    content: none;
+}
+
 /* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 768px) {
     .card, .game-over-screen, .victory-screen {
@@ -743,7 +747,8 @@ body .decision-text.right {
     padding: 15px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
-    width: 100%;
+    width: calc(100% - 30px);
+    box-sizing: border-box;
 }
 
 .share-title {
@@ -758,14 +763,15 @@ body .decision-text.right {
     gap: 20px;
     justify-content: center;
     width: 100%;
+    padding: 0 10px;
 }
 
 .share-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
@@ -786,8 +792,12 @@ body .decision-text.right {
 }
 
 .share-button i {
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .share-button.telegram {
@@ -814,6 +824,7 @@ body .decision-text.right {
     .share-container {
         padding: 12px;
         gap: 12px;
+        width: calc(100% - 24px);
     }
 
     .share-title {
@@ -822,14 +833,15 @@ body .decision-text.right {
 
     .share-buttons {
         gap: 15px;
+        padding: 0 5px;
     }
 
     .share-button {
-        width: 36px;
-        height: 36px;
+        width: 40px;
+        height: 40px;
     }
 
     .share-button i {
-        font-size: 14px;
+        font-size: 16px;
     }
 } 
