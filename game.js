@@ -80,7 +80,7 @@ class Game {
         this.elements.situationText = document.getElementById('situation-text');
         this.elements.choicesContainer = document.getElementById('choices-container');
         
-        this.elements.situationText.textContent = "Готовы стать владельцем собственного медиа? Каждое ваше решение будет влиять на будущее издания. Докажите, что журналистиа может быть успешной и прибыльной!";
+        this.elements.situationText.textContent = "Готовы стать владельцем собственного медиа? Каждое ваше решение будет влиять на будущее издания. Докажите, что журналистика может быть успешной и прибыльной!";
         this.elements.situationText.className = '';
         
         // Добавляем обработчик для кнопки старта
@@ -613,7 +613,7 @@ class Game {
         } else if (this.state.budget > 100000) {
             message += `Финансово издание чувствует себя уверенно (${this.state.budget.toLocaleString()} ₽).\n`;
         } else {
-            message += `Бюджет не блещет (${this.state.budget.toLocaleString()} ₽), но вы выжили!\n`;
+            message += `Бюджет не блещет (${this.state.budget.toLocaleString()} $), но вы выжили!\n`;
         }
         
         if (this.state.staffMorale > 75) {
