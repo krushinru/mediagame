@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор Favicon для Медиа-менеджера</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border: 3px solid #333;
+            box-shadow: 5px 5px 0px #000;
+        }
+        
+        .favicon-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .favicon-option {
+            width: 128px;
+            height: 128px;
+            border: 2px solid #333;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px #000;
+            position: relative;
+        }
+        
+        .favicon-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 3px 6px 0px #000;
+        }
+        
+        .favicon-option.selected {
+            border-color: #00aa00;
+            background-color: #eeffee;
+        }
+        
+        .favicon-option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #00aa00;
+            color: white;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+        }
+        
+        .icon {
+            width: 64px;
+            height: 64px;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px #000;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+            box-shadow: 3px 5px 0px #000;
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 2px 2px 0px #000;
+        }
+        
+        .preview {
+            margin-top: 30px;
+            border-top: 2px dashed #333;
+            padding-top: 20px;
+        }
+        
+        .preview-title {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .sizes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .size-preview {
+            border: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .size-label {
+            font-size: 10px;
+            margin-top: 5px;
+        }
+        
+        canvas {
+            image-rendering: pixelated;
+        }
+        
+        .apple-icon-preview {
+            margin-top: 25px;
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+        }
+        
+        .apple-icon-preview .size-preview {
+            margin: 0 auto;
+        }
+        
+        .apple-icon-description {
+            font-size: 10px;
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+        }
+        
+        .download-instructions {
+            margin-top: 20px;
+            background-color: #ffffee;
+            border: 1px solid #ddddcc;
+            padding: 15px;
+            font-size: 10px;
+            line-height: 1.5;
+        }
+        
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #333;
+            cursor: pointer;
+        }
+        
+        .color-option.selected {
+            border-color: white;
+            outline: 2px solid #00aa00;
+        }
+        
+        .background-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .background-option {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #333;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 3px 3px 0px #000;
+        }
+        
+        .background-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 3px 5px 0px #000;
+        }
+        
+        .background-option.selected {
+            border-color: #00aa00;
+            background-color: #eeffee;
+        }
+        
+        .background-option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #00aa00;
+            color: white;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+        }
+        
+        .background-preview {
+            width: 60px;
+            height: 60px;
+            position: relative;
+        }
+        
+        .background-name {
+            font-size: 8px;
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+        
+        .bg-none {
+            border: 1px dashed #999;
+        }
+        
+        .bg-circle {
+            background-color: #ddd;
+            border-radius: 50%;
+        }
+        
+        .bg-square {
+            background-color: #ddd;
+        }
+        
+        .bg-rounded {
+            background-color: #ddd;
+            border-radius: 12px;
+        }
+        
+        .bg-hexagon {
+            width: 60px;
+            height: 60px;
+            background-color: #ddd;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        
+        .color-title, .bg-title {
+            font-size: 12px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .bg-color-picker {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Генератор Favicon</h1>
+        
+        <p>Выберите иконку для вашего сайта Медиа-менеджера:</p>
+        
+        <div class="favicon-container">
+            <!-- Newspaper Icon -->
+            <div class="favicon-option" data-type="newspaper">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 5L20 19C20 20.1 19.1 21 18 21H6C4.9 21 4 20.1 4 19V5C4 3.9 4.9 3 6 3H18C19.1 3 20 3.9 20 5ZM11 7H6V12H11V7ZM18 7H13V10H18V7ZM11 13H6V17H11V13ZM18 12H13V17H18V12Z"/>
+                </svg>
+            </div>
+            
+            <!-- Document with Coins -->
+            <div class="favicon-option" data-type="document-coins">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14 2H6C4.9 2 4.01 2.9 4.01 4L4 20C4 21.1 4.89 22 5.99 22H18C19.1 22 20 21.1 20 20V8L14 2ZM16 18H8V16H16V18ZM16 14H8V12H16V14ZM13 9V3.5L18.5 9H13Z"/>
+                    <circle cx="7" cy="7" r="2"/>
+                    <circle cx="11" cy="7" r="2"/>
+                </svg>
+            </div>
+            
+            <!-- Media Badge -->
+            <div class="favicon-option selected" data-type="media-badge">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L4 5V11.09C4 16.14 7.41 20.85 12 22C16.59 20.85 20 16.14 20 11.09V5L12 2ZM12 8H18V11.09C18 15.09 15.45 18.79 12 19.92C8.55 18.79 6 15.1 6 11.09V8H12ZM9 10L7 12L9 14L11 12L9 10ZM15 10L13 12L15 14L17 12L15 10Z"/>
+                </svg>
+            </div>
+            
+            <!-- Trending News -->
+            <div class="favicon-option" data-type="trending">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16 6L18.29 8.29L13.41 13.17L9.41 9.17L2 16.59L3.41 18L9.41 12L13.41 16L19.71 9.71L22 12V6H16Z"/>
+                    <rect x="4" y="4" width="16" height="2"/>
+                    <rect x="4" y="18" width="16" height="2"/>
+                </svg>
+            </div>
+            
+            <!-- Letter M -->
+            <div class="favicon-option" data-type="letter-m">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M5 3L5 21H8V14H12V21H15V14H19V21H21V3H19V12H15V3H12V12H8V3H5Z"/>
+                </svg>
+            </div>
+            
+            <!-- Pixel M -->
+            <div class="favicon-option" data-type="pixel-m">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="4" y="4" width="4" height="16"/>
+                    <rect x="8" y="8" width="3" height="3"/>
+                    <rect x="13" y="8" width="3" height="3"/>
+                    <rect x="16" y="4" width="4" height="16"/>
+                </svg>
+            </div>
+        </div>
+        
+        <p>Выберите подложку для иконки:</p>
+        <div class="background-options">
+            <div class="background-option selected" data-bg="none">
+                <div class="background-preview">
+                    <div class="bg-none" style="width:100%; height:100%;"></div>
+                    <div class="background-name">Без подложки</div>
+                </div>
+            </div>
+            
+            <div class="background-option" data-bg="circle">
+                <div class="background-preview">
+                    <div class="bg-circle" style="width:100%; height:100%;"></div>
+                    <div class="background-name">Круг</div>
+                </div>
+            </div>
+            
+            <div class="background-option" data-bg="square">
+                <div class="background-preview">
+                    <div class="bg-square" style="width:100%; height:100%;"></div>
+                    <div class="background-name">Квадрат</div>
+                </div>
+            </div>
+            
+            <div class="background-option" data-bg="rounded">
+                <div class="background-preview">
+                    <div class="bg-rounded" style="width:100%; height:100%;"></div>
+                    <div class="background-name">Скругленный</div>
+                </div>
+            </div>
+            
+            <div class="background-option" data-bg="hexagon">
+                <div class="background-preview">
+                    <div class="bg-hexagon"></div>
+                    <div class="background-name">Шестиугольник</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="color-title">Цвет иконки:</div>
+        <div class="color-picker">
+            <div class="color-option selected" style="background-color: #333333;" data-color="#333333"></div>
+            <div class="color-option" style="background-color: #0066cc;" data-color="#0066cc"></div>
+            <div class="color-option" style="background-color: #cc3300;" data-color="#cc3300"></div>
+            <div class="color-option" style="background-color: #009933;" data-color="#009933"></div>
+            <div class="color-option" style="background-color: #9900cc;" data-color="#9900cc"></div>
+            <div class="color-option" style="background-color: #cc6600;" data-color="#cc6600"></div>
+        </div>
+        
+        <div class="bg-title">Цвет подложки:</div>
+        <div class="color-picker bg-color-picker">
+            <div class="color-option selected" style="background-color: #f0f0f0;" data-color="#f0f0f0"></div>
+            <div class="color-option" style="background-color: #333333;" data-color="#333333"></div>
+            <div class="color-option" style="background-color: #ff6600;" data-color="#ff6600"></div>
+            <div class="color-option" style="background-color: #0099ff;" data-color="#0099ff"></div>
+            <div class="color-option" style="background-color: #66cc33;" data-color="#66cc33"></div>
+            <div class="color-option" style="background-color: #cc3399;" data-color="#cc3399"></div>
+        </div>
+        
+        <div class="controls">
+            <button id="generate-btn">Сгенерировать Favicon</button>
+        </div>
+        
+        <div class="preview">
+            <div class="preview-title">Предпросмотр:</div>
+            <div class="sizes">
+                <div class="size-preview">
+                    <canvas id="favicon16" width="16" height="16"></canvas>
+                    <span class="size-label">16x16</span>
+                </div>
+                <div class="size-preview">
+                    <canvas id="favicon32" width="32" height="32"></canvas>
+                    <span class="size-label">32x32</span>
+                </div>
+                <div class="size-preview">
+                    <canvas id="favicon48" width="48" height="48"></canvas>
+                    <span class="size-label">48x48</span>
+                </div>
+                <div class="size-preview">
+                    <canvas id="favicon64" width="64" height="64"></canvas>
+                    <span class="size-label">64x64</span>
+                </div>
+            </div>
+            
+            <div class="apple-icon-preview">
+                <div class="size-preview">
+                    <canvas id="favicon180" width="180" height="180"></canvas>
+                    <span class="size-label">180x180</span>
+                </div>
+                <div class="apple-icon-description">Apple Touch Icon</div>
+            </div>
+            
+            <div class="download-instructions">
+                <p>Чтобы сохранить фавиконку:</p>
+                <ol>
+                    <li>Нажмите правой кнопкой мыши на нужный размер иконки</li>
+                    <li>Выберите "Сохранить изображение как..."</li>
+                    <li>Сохраните файл с именем favicon-16x16.png, favicon-32x32.png и т.д.</li>
+                    <li>Для размера 180x180 сохраните как apple-touch-icon.png</li>
+                    <li>Добавьте следующий код в ваш HTML:</li>
+                </ol>
+                <pre>
+&lt;link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png"&gt;
+&lt;link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"&gt;
+                </pre>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const faviconOptions = document.querySelectorAll('.favicon-option');
+        const backgroundOptions = document.querySelectorAll('.background-option');
+        const colorOptions = document.querySelectorAll('.color-picker:not(.bg-color-picker) .color-option');
+        const bgColorOptions = document.querySelectorAll('.bg-color-picker .color-option');
+        const generateBtn = document.getElementById('generate-btn');
+        
+        let selectedIcon = 'media-badge';
+        let selectedBackground = 'none';
+        let selectedColor = '#333333';
+        let selectedBgColor = '#f0f0f0';
+        
+        // Handle icon selection
+        faviconOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                faviconOptions.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedIcon = option.dataset.type;
+            });
+        });
+        
+        // Handle background selection
+        backgroundOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                backgroundOptions.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedBackground = option.dataset.bg;
+            });
+        });
+        
+        // Handle color selection
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                colorOptions.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedColor = option.dataset.color;
+            });
+        });
+        
+        // Handle background color selection
+        bgColorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                bgColorOptions.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedBgColor = option.dataset.color;
+            });
+        });
+        
+        // Generate favicon
+        generateBtn.addEventListener('click', () => {
+            generateFavicons(selectedIcon, selectedColor, selectedBackground, selectedBgColor);
+        });
+        
+        function generateFavicons(iconType, color, bgType, bgColor) {
+            const sizes = [16, 32, 48, 64, 180];
+            
+            sizes.forEach(size => {
+                const canvas = document.getElementById(`favicon${size}`);
+                const ctx = canvas.getContext('2d');
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, size, size);
+                
+                // Draw background if selected
+                if (bgType !== 'none') {
+                    drawBackground(ctx, size, bgType, bgColor);
+                }
+                
+                // Set icon color
+                ctx.fillStyle = color;
+                ctx.strokeStyle = color;
+                
+                // Draw icon based on type
+                switch(iconType) {
+                    case 'newspaper':
+                        drawNewspaper(ctx, size, bgType);
+                        break;
+                    case 'document-coins':
+                        drawDocumentCoins(ctx, size, bgType);
+                        break;
+                    case 'media-badge':
+                        drawMediaBadge(ctx, size, bgType);
+                        break;
+                    case 'trending':
+                        drawTrending(ctx, size, bgType);
+                        break;
+                    case 'letter-m':
+                        drawLetterM(ctx, size, bgType);
+                        break;
+                    case 'pixel-m':
+                        drawPixelM(ctx, size, bgType);
+                        break;
+                }
+            });
+        }
+        
+        function drawBackground(ctx, size, bgType, bgColor) {
+            const unit = size / 16;
+            ctx.fillStyle = bgColor;
+            
+            switch(bgType) {
+                case 'circle':
+                    ctx.beginPath();
+                    ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    break;
+                    
+                case 'square':
+                    ctx.fillRect(0, 0, size, size);
+                    break;
+                    
+                case 'rounded':
+                    const radius = size / 4;
+                    ctx.beginPath();
+                    ctx.moveTo(radius, 0);
+                    ctx.lineTo(size - radius, 0);
+                    ctx.quadraticCurveTo(size, 0, size, radius);
+                    ctx.lineTo(size, size - radius);
+                    ctx.quadraticCurveTo(size, size, size - radius, size);
+                    ctx.lineTo(radius, size);
+                    ctx.quadraticCurveTo(0, size, 0, size - radius);
+                    ctx.lineTo(0, radius);
+                    ctx.quadraticCurveTo(0, 0, radius, 0);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+                    
+                case 'hexagon':
+                    ctx.beginPath();
+                    ctx.moveTo(size / 2, 0);
+                    ctx.lineTo(size, size / 4);
+                    ctx.lineTo(size, 3 * size / 4);
+                    ctx.lineTo(size / 2, size);
+                    ctx.lineTo(0, 3 * size / 4);
+                    ctx.lineTo(0, size / 4);
+                    ctx.closePath();
+                    ctx.fill();
+                    break;
+            }
+        }
+        
+        function adjustIconSize(size, bgType) {
+            // Make icon smaller if background is present
+            return bgType !== 'none' ? size * 0.6 : size;
+        }
+        
+        function drawNewspaper(ctx, size, bgType) {
+            const adjustedSize = adjustIconSize(size, bgType);
+            const unit = adjustedSize / 16;
+            const offsetX = (size - adjustedSize) / 2;
+            const offsetY = (size - adjustedSize) / 2;
+            
+            // Draw newspaper outline
+            ctx.fillRect(offsetX + 2 * unit, offsetY + 2 * unit, 12 * unit, 12 * unit);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(offsetX + 3 * unit, offsetY + 3 * unit, 10 * unit, 10 * unit);
+            ctx.fillStyle = selectedColor;
+            
+            // Draw lines for text
+            ctx.fillRect(offsetX + 4 * unit, offsetY + 5 * unit, 8 * unit, unit);
+            ctx.fillRect(offsetX + 4 * unit, offsetY + 7 * unit, 8 * unit, unit);
+            ctx.fillRect(offsetX + 4 * unit, offsetY + 9 * unit, 8 * unit, unit);
+            ctx.fillRect(offsetX + 4 * unit, offsetY + 11 * unit, 5 * unit, unit);
+        }
+        
+        function drawDocumentCoins(ctx, size, bgType) {
+            const adjustedSize = adjustIconSize(size, bgType);
+            const unit = adjustedSize / 16;
+            const offsetX = (size - adjustedSize) / 2;
+            const offsetY = (size - adjustedSize) / 2;
+            
+            // Draw document
+            ctx.fillRect(offsetX + 3 * unit, offsetY + 2 * unit, 10 * unit, 12 * unit);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(offsetX + 4 * unit, offsetY + 3 * unit, 8 * unit, 10 * unit);
+            ctx.fillStyle = selectedColor;
+            
+            // Draw coin 1
+            ctx.beginPath();
+            ctx.arc(offsetX + 6 * unit, offsetY + 8 * unit, 2 * unit, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(offsetX + 6 * unit, offsetY + 8 * unit, unit, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = selectedColor;
+            
+            // Draw coin 2
+            ctx.beginPath();
+            ctx.arc(offsetX + 10 * unit, offsetY + 8 * unit, 2 * unit, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(offsetX + 10 * unit, offsetY + 8 * unit, unit, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = selectedColor;
+        }
+        
+        function drawMediaBadge(ctx, size, bgType) {
+            const adjustedSize = adjustIconSize(size, bgType);
+            const unit = adjustedSize / 16;
+            const offsetX = (size - adjustedSize) / 2;
+            const offsetY = (size - adjustedSize) / 2;
+            
+            // Draw shield
+            ctx.beginPath();
+            ctx.moveTo(offsetX + 8 * unit, offsetY + 2 * unit);
+            ctx.lineTo(offsetX + 14 * unit, offsetY + 4 * unit);
+            ctx.lineTo(offsetX + 14 * unit, offsetY + 10 * unit);
+            ctx.lineTo(offsetX + 8 * unit, offsetY + 14 * unit);
+            ctx.lineTo(offsetX + 2 * unit, offsetY + 10 * unit);
+            ctx.lineTo(offsetX + 2 * unit, offsetY + 4 * unit);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Draw M in the middle
+            ctx.fillStyle = 'white';
+            ctx.fillRect(offsetX + 4 * unit, offsetY + 5 * unit, 2 * unit, 6 * unit);
+            ctx.fillRect(offsetX + 6 * unit, offsetY + 7 * unit, unit, 2 * unit);
+            ctx.fillRect(offsetX + 7 * unit, offsetY + 7 * unit, unit, 2 * unit);
+            ctx.fillRect(offsetX + 8 * unit, offsetY + 7 * unit, unit, 2 * unit);
+            ctx.fillRect(offsetX + 10 * unit, offsetY + 5 * unit, 2 * unit, 6 * unit);
+            ctx.fillStyle = selectedColor;
+        }
+        
+        function drawTrending(ctx, size, bgType) {
+            const adjustedSize = adjustIconSize(size, bgType);
+            const unit = adjustedSize / 16;
+            const offsetX = (size - adjustedSize) / 2;
+            const offsetY = (size - adjustedSize) / 2;
+            
+            // Draw chart frame
+            ctx.fillRect(offsetX + 2 * unit, offsetY + 3 * unit, 12 * unit, unit);
+            ctx.fillRect(offsetX + 2 * unit, offsetY + 12 * unit, 12 * unit, unit);
+            ctx.fillRect(offsetX + 2 * unit, offsetY + 4 * unit, unit, 8 * unit);
+            
+            // Draw trending line
+            ctx.lineWidth = unit;
+            ctx.beginPath();
+            ctx.moveTo(offsetX + 3 * unit, offsetY + 10 * unit);
+            ctx.lineTo(offsetX + 6 * unit, offsetY + 7 * unit);
+            ctx.lineTo(offsetX + 9 * unit, offsetY + 9 * unit);
+            ctx.lineTo(offsetX + 13 * unit, offsetY + 5 * unit);
+            ctx.stroke();
+            
+            // Draw arrow at the end
+            ctx.beginPath();
+            ctx.moveTo(offsetX + 12 * unit, offsetY + 4 * unit);
+            ctx.lineTo(offsetX + 14 * unit, offsetY + 4 * unit);
+            ctx.lineTo(offsetX + 13 * unit, offsetY + 5 * unit);
+            ctx.lineTo(offsetX + 14 * unit, offsetY + 6 * unit);
+            ctx.lineTo(offsetX + 12 * unit, offsetY + 6 * unit);
+            ctx.fill();
+        }
+        
+        function drawLetterM(ctx, size, bgType) {
+            const adjustedSize = adjustIconSize(size, bgType);
+            const unit = adjustedSize / 16;
+            const offsetX = (size - adjustedSize) / 2;
+            const offsetY = (size - adjustedSize) / 2;
+            
+            // Draw M
+            ctx.fillRect(offsetX + 3 * unit, offsetY + 3 * unit, 2 * unit, 10 * unit);
+            ctx.fillRect(offsetX + 11 * unit, offsetY + 3 * unit, 2 * unit, 10 * unit);
+            
+            ctx.beginPath();
+            ctx.moveTo(offsetX + 5 * unit, offsetY + 3 * unit);
+            ctx.lineTo(offsetX + 8 * unit, offsetY + 8 * unit);
+            ctx.lineTo(offsetX + 11 * unit, offsetY + 3 * unit);
+            ctx.lineTo(offsetX + 11 * unit, offsetY + 5 * unit);
+            ctx.lineTo(offsetX + 8 * unit, offsetY + 10 * unit);
+            ctx.lineTo(offsetX + 5 * unit, offsetY + 5 * unit);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        function drawPixelM(ctx, size, bgType) {
+            const adjustedSize = adjustIconSize(size, bgType);
+            const unit = adjustedSize / 16;
+            const offsetX = (size - adjustedSize) / 2;
+            const offsetY = (size - adjustedSize) / 2;
+            
+            // Draw pixel M
+            ctx.fillRect(offsetX + 3 * unit, offsetY + 3 * unit, 2 * unit, 10 * unit);
+            ctx.fillRect(offsetX + 11 * unit, offsetY + 3 * unit, 2 * unit, 10 * unit);
+            ctx.fillRect(offsetX + 5 * unit, offsetY + 5 * unit, 2 * unit, 2 * unit);
+            ctx.fillRect(offsetX + 7 * unit, offsetY + 7 * unit, 2 * unit, 2 * unit);
+            ctx.fillRect(offsetX + 9 * unit, offsetY + 5 * unit, 2 * unit, 2 * unit);
+        }
+        
+        // Generate favicon on load with default settings
+        window.onload = () => {
+            generateFavicons(selectedIcon, selectedColor, selectedBackground, selectedBgColor);
+        };
+    </script>
+</body>
+</html> 

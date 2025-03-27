@@ -493,10 +493,10 @@ body .decision-text.right {
 }
 
 .restart-button, .victory-button {
-    background: rgba(100, 100, 100, 0.95) !important;
-    border: 2px solid #888 !important;
-    padding: 12px 20px !important;
-    font-size: 0.8em !important;
+    background: rgba(100, 100, 100, 0.95);
+    border: 2px solid #888;
+    padding: 15px 25px;
+    font-size: 0.8em;
     transition: all 0.2s ease;
     border-radius: 4px;
     margin-top: 15px;
@@ -505,22 +505,35 @@ body .decision-text.right {
     font-family: 'Press Start 2P', cursive;
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .restart-button:hover {
-    background: #777 !important;
-    transform: scale(1.03);
+    background: #777;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.restart-button:active {
+    transform: translateY(0);
 }
 
 .victory-button {
-    background: rgba(60, 120, 60, 0.95) !important;
-    border: 2px solid #4CAF50 !important;
+    background: rgba(60, 120, 60, 0.95);
+    border: 2px solid #4CAF50;
 }
 
 .victory-button:hover {
-    background: #4CAF50 !important;
-    transform: scale(1.03);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+    background: #4CAF50;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.victory-button:active {
+    transform: translateY(0);
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
@@ -606,6 +619,12 @@ body .decision-text.right {
     
     .choice-button.negative::after {
         left: 12px;
+    }
+    
+    .restart-button, .victory-button {
+        font-size: 0.7em !important;
+        padding: 12px 20px !important;
+        min-width: 180px;
     }
 }
 

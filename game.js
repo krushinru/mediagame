@@ -1044,18 +1044,14 @@ class Game {
         this.elements.currentCard.style = '';
         
         if (isVictory) {
-            // Показываем экран победы
             this.showVictory();
         } else {
-            // Показываем экран поражения
             const gameOverContent = document.createElement('div');
             gameOverContent.className = 'game-over-content';
             
-            // Создаем текст сообщения
             const messageText = document.createElement('p');
             messageText.className = 'game-over-text';
             
-            // Определяем причину поражения
             let gameOverReason = "Игра окончена!";
             if (this.state.budget <= 0) {
                 gameOverReason = "Ваше издание обанкротилось.";
@@ -1069,16 +1065,13 @@ class Game {
             
             messageText.textContent = `${gameOverReason}\n\nВы продержались ${this.state.turnCount} дней.\nБюджет: ${this.state.budget.toLocaleString()}\nЧитатели: ${this.state.readers.toLocaleString()}`;
             
-            // Добавляем кнопку "Играть снова"
             const restartButton = document.createElement('button');
-            restartButton.className = 'choice-button restart-button';
+            restartButton.className = 'restart-button';
             restartButton.textContent = 'Играть снова';
             restartButton.onclick = () => this.resetGame();
             
-            // Добавляем кнопки шеринга
             const shareButtons = this.createShareButtons(false);
             
-            // Добавляем элементы на экран поражения
             gameOverContent.appendChild(messageText);
             gameOverContent.appendChild(restartButton);
             gameOverContent.appendChild(shareButtons);
