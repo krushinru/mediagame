@@ -291,8 +291,8 @@ body {
     margin: 0 auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     position: relative;
-    padding-left: 45px;
-    padding-right: 45px;
+    padding-left: 35px;
+    padding-right: 35px;
     min-width: 200px;
     justify-content: center;
 }
@@ -300,7 +300,7 @@ body {
 .choice-button::after {
     content: '›';
     position: absolute;
-    right: 12px;
+    right: 8px;
     top: 50%;
     transform: translateY(-50%);
     font-size: 1.2em;
@@ -314,7 +314,7 @@ body {
 .choice-button.negative::after {
     content: '‹';
     right: auto;
-    left: 12px;
+    left: 8px;
     color: #ff4444;
 }
 
@@ -612,23 +612,39 @@ body .decision-text.right {
     
     .choice-button {
         min-width: 180px;
-        padding-left: 35px;
-        padding-right: 35px;
+        padding-left: 25px;
+        padding-right: 25px;
     }
     
     .choice-button::after {
-        font-size: 1.1em;
-        right: 10px;
+        font-size: 1em;
+        right: 6px;
     }
     
     .choice-button.negative::after {
-        left: 10px;
+        left: 6px;
     }
     
     .restart-button, .victory-button {
         font-size: 0.7em !important;
         padding: 12px 20px !important;
         min-width: 180px;
+    }
+}
+
+@media (max-width: 350px) {
+    .choice-button {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .choice-button::after {
+        font-size: 0.9em;
+        right: 4px;
+    }
+    
+    .choice-button.negative::after {
+        left: 4px;
     }
 }
 
