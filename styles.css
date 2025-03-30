@@ -612,17 +612,16 @@ body .decision-text.right {
     
     .choice-button {
         min-width: 180px;
-        padding-left: 25px;
-        padding-right: 25px;
+        padding-left: 15px;
+        padding-right: 15px;
     }
     
     .choice-button::after {
-        font-size: 1em;
-        right: 6px;
+        display: none;
     }
     
     .choice-button.negative::after {
-        left: 6px;
+        display: none;
     }
     
     .restart-button, .victory-button {
@@ -634,17 +633,8 @@ body .decision-text.right {
 
 @media (max-width: 350px) {
     .choice-button {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-    
-    .choice-button::after {
-        font-size: 0.9em;
-        right: 4px;
-    }
-    
-    .choice-button.negative::after {
-        left: 4px;
+        padding-left: 12px;
+        padding-right: 12px;
     }
 }
 
