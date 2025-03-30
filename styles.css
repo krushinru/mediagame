@@ -291,19 +291,19 @@ body {
     margin: 0 auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     position: relative;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: 45px;
+    padding-right: 45px;
     min-width: 200px;
     justify-content: center;
 }
 
 .choice-button::after {
-    content: '→';
+    content: '›';
     position: absolute;
-    right: 15px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.4em;
+    font-size: 1.2em;
     opacity: 1;
     transition: all 0.2s ease;
     pointer-events: none;
@@ -312,9 +312,9 @@ body {
 }
 
 .choice-button.negative::after {
-    content: '←';
+    content: '‹';
     right: auto;
-    left: 15px;
+    left: 12px;
     color: #ff4444;
 }
 
@@ -617,12 +617,12 @@ body .decision-text.right {
     }
     
     .choice-button::after {
-        font-size: 1.3em;
-        right: 12px;
+        font-size: 1.1em;
+        right: 10px;
     }
     
     .choice-button.negative::after {
-        left: 12px;
+        left: 10px;
     }
     
     .restart-button, .victory-button {
