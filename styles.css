@@ -298,28 +298,19 @@ body {
 }
 
 .choice-button::after {
-    content: '›';
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.2em;
-    opacity: 1;
-    transition: all 0.2s ease;
-    pointer-events: none;
-    text-shadow: 0 0 5px currentColor;
-    font-weight: bold;
+    content: none;
 }
 
 .choice-button.negative::after {
-    content: '‹';
-    right: auto;
-    left: 8px;
-    color: #ff4444;
+    content: none;
 }
 
-.choice-button.positive::after {
-    color: #44ff44;
+.choice-button.positive {
+    color: #7cff7c;
+}
+
+.choice-button.negative {
+    color: #ff7c7c;
 }
 
 .choice-button:hover::after {
