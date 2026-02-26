@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Game Banner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .banner-container {
+            width: 100%;
+            height: 180px;
+            background: #111;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Press Start 2P', monospace;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+            background-image: 
+                linear-gradient(0deg, transparent 24%, 
+                    rgba(32, 32, 32, .3) 25%, 
+                    rgba(32, 32, 32, .3) 26%, 
+                    transparent 27%, transparent 74%, 
+                    rgba(32, 32, 32, .3) 75%, 
+                    rgba(32, 32, 32, .3) 76%, 
+                    transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, 
+                    rgba(32, 32, 32, .3) 25%, 
+                    rgba(32, 32, 32, .3) 26%, 
+                    transparent 27%, transparent 74%, 
+                    rgba(32, 32, 32, .3) 75%, 
+                    rgba(32, 32, 32, .3) 76%, 
+                    transparent 77%, transparent);
+            background-size: 50px 50px;
+        }
+
+        .inside-container {
+            display: flex;
+            align-items: center;
+            margin: auto;
+            justify-content: space-between;
+            max-width: 940px;
+            padding: 20px;
+        }
+
+        .banner-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-right: 20px;
+            z-index: 1;
+        }
+
+        .banner-title {
+            font-size: 1.2em;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .banner-subtitle {
+            font-size: 0.7em;
+            color: #888;
+            line-height: 1.4;
+        }
+
+        .banner-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.6em;
+            color: #888;
+        }
+
+        .stat-value {
+            font-size: 0.8em;
+            color: #fff;
+        }
+
+        .banner-cta {
+            background: rgba(60, 120, 60, 0.95);
+            border: 2px solid #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8em;
+            border-radius: 4px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 200px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+            z-index: 1;
+        }
+
+        .banner-container:hover .banner-cta {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            background: #4CAF50;
+        }
+
+        .banner-container:active .banner-cta {
+            transform: translateY(0);
+        }
+
+        .pixel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            .banner-container {
+                height: auto;
+                min-height: 180px;
+            }
+
+            .inside-container {
+                flex-direction: column;
+                text-align: center;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .banner-content {
+                margin-right: 0;
+                align-items: center;
+            }
+
+            .banner-title {
+                font-size: 1em;
+            }
+
+            .banner-subtitle {
+                font-size: 0.65em;
+            }
+
+            .banner-stats {
+                justify-content: center;
+            }
+
+            .banner-cta {
+                padding: 12px 20px;
+                font-size: 0.7em;
+                min-width: 180px;
+            }
+        }
+
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 5px rgba(76, 175, 80, 0.5); }
+            50% { text-shadow: 0 0 15px rgba(76, 175, 80, 0.8); }
+            100% { text-shadow: 0 0 5px rgba(76, 175, 80, 0.5); }
+        }
+
+        .glow-text {
+            animation: glowPulse 2s infinite;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://krushin.me/mediagame" class="banner-container" target="_blank">
+        <div class="inside-container">
+        <div class="banner-content">
+            <h1 class="banner-title">Медиа-менеджер</h1>
+            <p class="banner-subtitle">Сможете ли вы управлять собственным изданием?<br>Каждое решение имеет последствия!</p>
+            <div class="banner-stats">
+                <div class="stat">
+                    <div class="stat-label">Бюджет</div>
+                    <div class="stat-value">100 000</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Читатели</div>
+                    <div class="stat-value">10 000</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Доверие</div>
+                    <div class="stat-value">50%</div>
+                </div>
+            </div>
+        </div>
+        <div class="banner-cta">
+            Возглавить издание
+        </div>
+        </div>
+        <div class="pixel-overlay"></div>
+    </a>
+    <script>
+        // Анимация значений статистики
+        function animateValue(element, start, end, duration) {
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                if (end >= 1000) {
+                    element.textContent = Math.round(current).toLocaleString();
+                } else {
+                    element.textContent = Math.round(current) + '%';
+                }
+            }, 16);
+        }
+
+        // Анимируем статистику при наведении
+        document.querySelector('.banner-container').addEventListener('mouseenter', () => {
+            const stats = [
+                { element: document.querySelectorAll('.stat-value')[0], start: 100000, end: 150000 },
+                { element: document.querySelectorAll('.stat-value')[1], start: 10000, end: 25000 },
+                { element: document.querySelectorAll('.stat-value')[2], start: 50, end: 75 }
+            ];
+            
+            stats.forEach(stat => {
+                animateValue(stat.element, stat.start, stat.end, 1000);
+            });
+        });
+
+        // Возвращаем значения при уходе курсора
+        document.querySelector('.banner-container').addEventListener('mouseleave', () => {
+            const stats = [
+                { element: document.querySelectorAll('.stat-value')[0], start: 150000, end: 100000 },
+                { element: document.querySelectorAll('.stat-value')[1], start: 25000, end: 10000 },
+                { element: document.querySelectorAll('.stat-value')[2], start: 75, end: 50 }
+            ];
+            
+            stats.forEach(stat => {
+                animateValue(stat.element, stat.start, stat.end, 500);
+            });
+        });
+    </script>
+</body>
+</html>
